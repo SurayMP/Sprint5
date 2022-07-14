@@ -1,5 +1,5 @@
-from direccion import Direccion
-from razon import Razon
+from clases.direccion import Direccion
+from clases.razon import Razon
 
 class Cliente:
     """
@@ -22,10 +22,16 @@ class Cliente:
         
         # self.razones=[ Razon(x) for x in self.transacciones ]
     def __str__(self) -> str:
-        return f"{self.apellido} {self.nombre}"
-
-    def __str__(self) -> str:
-        return f"{self.apellido} {self.nombre}"
+        return f"""{ self.transacciones,
+        self.numero,
+        self.nombre,
+        self.apellido,
+        self.dni,
+        self.dolares,
+        self.chequera,
+        self.tarjetaCredito,
+        self.cuentas,
+        self.razones}"""
 
     def puede_crear_chequera(self) -> bool:
         return self.chequera
@@ -39,11 +45,11 @@ class Cliente:
 
 class ClienteClassic(Cliente):
    def __init__(self,diccionarioInfoCliente) -> None:
-        Cliente.__init__(diccionarioInfoCliente)
+        Cliente.__init__(self,diccionarioInfoCliente)
         # self.razones=[ Razon(x,self) for x in self.transacciones ]
 class ClienteGold(Cliente):
    def __init__(self,diccionarioInfoCliente) -> None:
-        Cliente.__init__(diccionarioInfoCliente)
+        Cliente.__init__(self,diccionarioInfoCliente)
 class ClienteBlack(Cliente):
    def __init__(self,diccionarioInfoCliente) -> None:
-        Cliente.__init__(diccionarioInfoCliente)
+        Cliente.__init__(self,diccionarioInfoCliente)
