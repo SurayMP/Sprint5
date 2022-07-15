@@ -51,5 +51,28 @@ class ClienteGold(Cliente):
    def __init__(self,diccionarioInfoCliente) -> None:
         Cliente.__init__(self,diccionarioInfoCliente)
 class ClienteBlack(Cliente):
-   def __init__(self,diccionarioInfoCliente) -> None:
+    def __init__(self,diccionarioInfoCliente) -> None:
         Cliente.__init__(self,diccionarioInfoCliente)
+        self.tarjetaCredito = 5
+        self.tarjetaDebito = True
+        self.limiteDiario = 100000
+        self.comisionTransferencia = 0
+        self.tranferenciaAClienteMax = "no Limits"
+        self.chequera = 2 
+        self.cuentaCorrienteNegativo = -10000 #armar funcion cuenta corriente negativo
+        self.cuentas = {
+            "AHORRO_PESOS":True,
+            "AHORRO_DOLARES":True,
+            "CUENTA_CORRIENTE":True,
+        }
+    def puede_crear_chequera(self) -> bool:
+        return True
+
+    def puede_crear_tarjeta_credito(self)-> bool:
+        return True
+    
+    def puede_comprar_dolar(self)-> bool:
+        return True
+
+    def datos_para_html (self):
+        pass
