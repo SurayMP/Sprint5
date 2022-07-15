@@ -1,15 +1,9 @@
 # Sprint5
-Grupo 2
-INTEGRANTES
-
+# Grupo 2
+## INTEGRANTES
 Pedraza Suray
-
 Saleme Juan Ignacio
-
 Latorre Ignacio
-
 Rocio Peña
-
-Augusto manzone
-
+Augusto Manzone
 Catalina Groba
