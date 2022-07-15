@@ -1,5 +1,6 @@
 class Razon:
 
+
     type: str
 
     def __init__(self):
@@ -61,4 +62,5 @@ class RazonTransferenciaRecibida(Razon):
     '''
         implementar resolver segun los casos de negocio
     '''
+
 
