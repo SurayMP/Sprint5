@@ -1,5 +1,6 @@
 from clases.direccion import Direccion
 from clases.razon import Razon
+from clases.cuenta import Cuenta
 
 class Cliente:
     """
@@ -10,9 +11,10 @@ class Cliente:
         self.nombre= diccionarioInfoCliente.get('nombre')
         self.apellido= diccionarioInfoCliente.get('apellido')
         self.dni= diccionarioInfoCliente.get('DNI')
-        self.dolares=False
-        self.chequera=False
         self.tarjetaCredito=False
+        self.tarjetaDebito = False
+        self.chequera = False
+        self.dolares = False
         self.cuentas={
             "AHORRO_PESOS":False,
             "AHORRO_DOLARES":False,
@@ -27,29 +29,52 @@ class Cliente:
         self.nombre,
         self.apellido,
         self.dni,
-        self.dolares,
-        self.chequera,
-        self.tarjetaCredito,
         self.cuentas,
         self.razones}"""
 
     def puede_crear_chequera(self) -> bool:
-        return self.chequera
+        return False
 
     def puede_crear_tarjeta_credito(self) -> bool:
-        return self.tarjetaCredito
+        return False
         
     def puede_comprar_dolar(self) -> bool:
-        return self.dolares
-
+        return False
+    def datos_para_html(self):
+        pass
 
 class ClienteClassic(Cliente):
-   def __init__(self,diccionarioInfoCliente) -> None:
+    def __init__(self,diccionarioInfoCliente) -> None:
         Cliente.__init__(self,diccionarioInfoCliente)
+        self.tarjetaDebito = True
+        self.limiteDiario=10000
+        # porcentaje
+        self.comisionTransferencias=1
+        # No puede recibir transferencias mayores a $150.000 sin previo aviso.
+        self.transferenciasAClienteMax=150000
+        self.cuentas={
+            "AHORRO_PESOS":Cuenta("datos"),
+            "AHORRO_DOLARES":False,
+            "CUENTA_CORRIENTE":False,
+        }
+    def puede_crear_chequera(self) -> bool:
+        return False
+
+    def puede_crear_tarjeta_credito(self) -> bool:
+        return False
+        
+    def puede_comprar_dolar(self) -> bool:
+        return False
+    def datos_para_html(self):
+        pass
         # self.razones=[ Razon(x,self) for x in self.transacciones ]
+
+
 class ClienteGold(Cliente):
    def __init__(self,diccionarioInfoCliente) -> None:
         Cliente.__init__(self,diccionarioInfoCliente)
+
+
 class ClienteBlack(Cliente):
    def __init__(self,diccionarioInfoCliente) -> None:
         Cliente.__init__(self,diccionarioInfoCliente)
