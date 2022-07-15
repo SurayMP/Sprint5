@@ -1,12 +1,10 @@
 class Razon:
-
-
     type: str
 
     def __init__(self):
         self.type = ''
 
-    def resolver(cliente, evento):
+    def resolver(self,cliente, evento):
         return ''
 
 class RazonAltaChequera(Razon):

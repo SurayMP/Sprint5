@@ -1,6 +1,6 @@
 from clases.direccion import Direccion
 from clases.razon import Razon
-from clases.cuenta import Cuenta
+from clases.cuenta import CuentaDolares,CuentaCorriente,CuentaPesos
 
 class Cliente:
     """
@@ -24,13 +24,13 @@ class Cliente:
         
         # self.razones=[ Razon(x) for x in self.transacciones ]
     def __str__(self) -> str:
-        return f"""{ self.transacciones,
-        self.numero,
-        self.nombre,
-        self.apellido,
-        self.dni,
-        self.cuentas,
-        self.razones}"""
+        return f"""\n
+        {self.numero}\n
+        {self.nombre}\n
+        {self.apellido}\n
+        {self.dni}\n
+        {self.cuentas}\n
+        {self.razones}"""
 
     def puede_crear_chequera(self) -> bool:
         return False
@@ -46,17 +46,19 @@ class Cliente:
 class ClienteClassic(Cliente):
     def __init__(self,diccionarioInfoCliente) -> None:
         Cliente.__init__(self,diccionarioInfoCliente)
-        self.tarjetaDebito = True
-        self.limiteDiario=10000
-        # porcentaje
-        self.comisionTransferencias=1
-        # No puede recibir transferencias mayores a $150.000 sin previo aviso.
-        self.transferenciasAClienteMax=150000
+        self.tarjetaDebito = 1
         self.cuentas={
-            "AHORRO_PESOS":Cuenta("datos"),
+            "AHORRO_PESOS":CuentaPesos({
+                "_limite_extraccion_diario":10000,
+                "_limite_transferencia_recibida":150000,
+                "_costo_transferencias":1
+            }),
             "AHORRO_DOLARES":False,
             "CUENTA_CORRIENTE":False,
         }
+        # self.razones=[ Razon(cadaTransacc,self) for cadaTransacc in self.transacciones ]
+
+
     def puede_crear_chequera(self) -> bool:
         return False
 
@@ -68,6 +70,8 @@ class ClienteClassic(Cliente):
     def datos_para_html(self):
         pass
         # self.razones=[ Razon(x,self) for x in self.transacciones ]
+    # def __str__(self):
+    #     return self.cuentas.get("AHORRO_PESOS").__str__()
 
 
 class ClienteGold(Cliente):
@@ -80,15 +84,24 @@ class ClienteBlack(Cliente):
         Cliente.__init__(self,diccionarioInfoCliente)
         self.tarjetaCredito = 5
         self.tarjetaDebito = True
-        self.limiteDiario = 100000
-        self.comisionTransferencia = 0
-        self.tranferenciaAClienteMax = "no Limits"
         self.chequera = 2 
-        self.cuentaCorrienteNegativo = -10000 #armar funcion cuenta corriente negativo
         self.cuentas = {
-            "AHORRO_PESOS":True,
-            "AHORRO_DOLARES":True,
-            "CUENTA_CORRIENTE":True,
+            "AHORRO_PESOS":CuentaPesos({
+                "_limite_extraccion_diario":100000,
+                "_limite_transferencia_recibida":0,
+                "_costo_transferencias":0
+            }),
+            "AHORRO_DOLARES":CuentaDolares({
+                "_limite_extraccion_diario":100000,
+                "_limite_transferencia_recibida":0,
+                "_costo_transferencias":0
+            }),
+            "CUENTA_CORRIENTE":CuentaCorriente({
+                "_limite_extraccion_diario":100000,
+                "_limite_transferencia_recibida":0,
+                "_costo_transferencias":0,
+                "_saldo_descubierto_disponible":-10000
+            }),
         }
     def puede_crear_chequera(self) -> bool:
         return True
