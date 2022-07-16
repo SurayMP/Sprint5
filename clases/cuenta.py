@@ -1,5 +1,3 @@
-from pickle import TRUE
-
 
 class Cuenta:
     
@@ -15,16 +13,10 @@ class Cuenta:
         self._limite_transferencia_recibida = data.get('_limite_transferencia_recibida')
         self._costo_transferencias = data.get('_costo_transferencias')
         self._saldo_descubierto_disponible = data.get('_saldo_descubierto_disponible') or 0
-
     def __str__(self) -> str:
         return f"{self._limite_extraccion_diario}"
 
-
-
-class CuentaDolares(Cuenta):
-    def __init__(self, data) -> None:
-        super().__init__(data)
-    def comprar(self,data):
+    def comprarDolares(self,data):
         saldo = data.get("saldoEnCuenta")
         valorDolar = data.get("valorDolar")
         cantidad = data.get("cantidad")
@@ -32,7 +24,7 @@ class CuentaDolares(Cuenta):
 
         # Cambiar la tupla por Diccionario??
         if saldo >= cantidad*valorDolar:
-            return (TRUE,
+            return (True,
             f"La Operacion De Compra Fue Exitosa",
             f"Compra por un costo de ${cantidad*valorDolar}",
             f"Se Recibio una Cantidad de $USD{cantidad}"
@@ -44,8 +36,3 @@ class CuentaDolares(Cuenta):
             f"Se Recibio una Cantidad de $USD{0}",
             )
 
-class CuentaPesos(Cuenta):
-    pass
-
-class CuentaCorriente(Cuenta):
-    pass
