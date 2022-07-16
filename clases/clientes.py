@@ -63,7 +63,7 @@ class ClienteClassic(Cliente):
         return False
     def datos_para_html (self):
         print(self.razones)
-        pass
+        return self.razones
         # self.razones=[ Razon(x,self) for x in self.transacciones ]
     # def __str__(self):
     #     return self.cuentas.get("AHORRO_PESOS").__str__()
@@ -98,4 +98,4 @@ class ClienteBlack(Cliente):
 
     def datos_para_html (self):
         print(self.razones)
-        pass
+        return self.razones
