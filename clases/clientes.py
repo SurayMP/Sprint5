@@ -1,6 +1,7 @@
+from clases.cuenta import Cuenta
 from clases.direccion import Direccion
-from clases.razon import Razon
-from clases.cuenta import CuentaDolares,CuentaCorriente,CuentaPesos
+from clases.razon import RealizarOperacion
+
 
 class Cliente:
     """
@@ -15,11 +16,7 @@ class Cliente:
         self.tarjetaDebito = False
         self.chequera = False
         self.dolares = False
-        self.cuentas={
-            "AHORRO_PESOS":False,
-            "AHORRO_DOLARES":False,
-            "CUENTA_CORRIENTE":False,
-        }
+        self.cuenta=None
         self.razones=[]
         
         # self.razones=[ Razon(x) for x in self.transacciones ]
@@ -47,16 +44,13 @@ class ClienteClassic(Cliente):
     def __init__(self,diccionarioInfoCliente) -> None:
         Cliente.__init__(self,diccionarioInfoCliente)
         self.tarjetaDebito = 1
-        self.cuentas={
-            "AHORRO_PESOS":CuentaPesos({
-                "_limite_extraccion_diario":10000,
-                "_limite_transferencia_recibida":150000,
-                "_costo_transferencias":1
-            }),
-            "AHORRO_DOLARES":False,
-            "CUENTA_CORRIENTE":False,
-        }
-        # self.razones=[ Razon(cadaTransacc,self) for cadaTransacc in self.transacciones ]
+        self.cuenta=Cuenta({
+            "_limite_extraccion_diario":10000,
+            "_limite_transferencia_recibida":150000,
+            "_costo_transferencias":1,
+            "_saldo_descubierto_disponible":0
+        })
+        self.razones=[ RealizarOperacion(self,cadaTransacc) for cadaTransacc in self.transacciones ]
 
 
     def puede_crear_chequera(self) -> bool:
@@ -67,7 +61,8 @@ class ClienteClassic(Cliente):
         
     def puede_comprar_dolar(self) -> bool:
         return False
-    def datos_para_html(self):
+    def datos_para_html (self):
+        print(self.razones)
         pass
         # self.razones=[ Razon(x,self) for x in self.transacciones ]
     # def __str__(self):
@@ -85,24 +80,13 @@ class ClienteBlack(Cliente):
         self.tarjetaCredito = 5
         self.tarjetaDebito = True
         self.chequera = 2 
-        self.cuentas = {
-            "AHORRO_PESOS":CuentaPesos({
-                "_limite_extraccion_diario":100000,
-                "_limite_transferencia_recibida":0,
-                "_costo_transferencias":0
-            }),
-            "AHORRO_DOLARES":CuentaDolares({
-                "_limite_extraccion_diario":100000,
-                "_limite_transferencia_recibida":0,
-                "_costo_transferencias":0
-            }),
-            "CUENTA_CORRIENTE":CuentaCorriente({
-                "_limite_extraccion_diario":100000,
-                "_limite_transferencia_recibida":0,
-                "_costo_transferencias":0,
-                "_saldo_descubierto_disponible":-10000
-            }),
-        }
+        self.cuenta = Cuenta({
+            "_limite_extraccion_diario":100000,
+            "_limite_transferencia_recibida":0,
+            "_costo_transferencias":0,
+            "_saldo_descubierto_disponible":-10000
+        })
+        self.razones=[ RealizarOperacion(self,cadaTransacc) for cadaTransacc in self.transacciones ]
     def puede_crear_chequera(self) -> bool:
         return True
 
@@ -113,4 +97,5 @@ class ClienteBlack(Cliente):
         return True
 
     def datos_para_html (self):
+        print(self.razones)
         pass

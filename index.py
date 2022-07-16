@@ -18,7 +18,8 @@ if __name__=='__main__':
         data=json.load(archivo)
         archivo.close()
         # print(data)
-        print(createClient(data,Tipos.get(data.get('tipo'))))
+        client = createClient(data,Tipos.get(data.get('tipo')))
+        client.datos_para_html()
         
     except Exception as error:
         print("Un Error A Ocurrido con el Archivo Proporcionado")

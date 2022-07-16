@@ -1,3 +1,9 @@
+Estados = {
+    'ACEPTADA':True,
+    'RECHAZADA':False,
+}
+
+
 class Razon:
     type: str
 
@@ -5,7 +11,9 @@ class Razon:
         self.type = ''
 
     def resolver(self,cliente, evento):
-        return ''
+        self.cliente=cliente
+        self.evento = evento
+        return 'Analizis'
 
 class RazonAltaChequera(Razon):
 
@@ -29,10 +37,15 @@ class RazonCompraDolar(Razon):
 
     def __init__(self):
         self.type = 'COMPRAR_DOLAR'
+        
+    def resolver(self,cliente,evento):
+        super().resolver(cliente,evento)
+        
+        if self.cliente.puede_comprar_dolar():
+            return self.cliente.cuenta.comprarDolares(self.evento)
+        else:
+            return ("El Cliente No Puede Comprar Dolares")
 
-    '''
-        implementar resolver segun los casos de negocio
-    '''
 
 class RazonRetiroEfectivo(Razon):
 
@@ -61,4 +74,18 @@ class RazonTransferenciaRecibida(Razon):
         implementar resolver segun los casos de negocio
     '''
 
+
+Razones={
+    'RETIRO_EFECTIVO_CAJERO_AUTOMATICO': RazonRetiroEfectivo,
+    'ALTA_TARJETA_CREDITO': RazonAltaTarjetaCredito,
+    'ALTA_CHEQUERA': RazonAltaChequera,
+    'COMPRAR_DOLAR': RazonCompraDolar,
+    'TRANSFERENCIA_ENVIADA': RazonTransferenciaEnviada,
+    'TRANSFERENCIA_RECIBIDA': RazonTransferenciaRecibida,
+}
+def RealizarOperacion(cliente,operacion):
+    evento = operacion.get('tipo')
+    razon = Razones.get(evento)()
+    return razon.resolver(cliente,operacion)
+    # estado = operacion.get('estado')
 
