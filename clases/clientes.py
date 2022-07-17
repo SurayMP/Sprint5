@@ -45,6 +45,13 @@ class Cliente:
         
     def puede_comprar_dolar(self) -> bool:
         return False
+
+    def getTarjetaCredito(self):
+        return self.tarjetaCredito
+    
+    def getChequeras(self):
+        return self.chequera
+
     def datos_para_html (self):
         datos={
             'cliente':( self.nombre,self.apellido,self.dni,self.numero ),

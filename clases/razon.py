@@ -26,18 +26,22 @@ class RazonAltaChequera(Razon):
     def __init__(self):
         self.type = 'ALTA_CHEQUERA'
 
-    '''
-        implementar resolver segun los casos de negocio
-    '''
+    def resolver(self,cliente,evento):
+        super().resolver(cliente,evento)
+        self.razonDatos.update(self.cuenta.altaChequera(self.cliente, self.evento))
+        return self.razonDatos
+
 
 class RazonAltaTarjetaCredito(Razon):
 
     def __init__(self):
         self.type = 'ALTA_TARJETA_CREDITO'
 
-    '''
-        implementar resolver segun los casos de negocio
-    '''
+    def resolver(self, cliente, evento):
+        super().resolver(cliente, evento)
+        self.razonDatos.update(self.cuenta.altaTarjeta(self.cliente, self.evento))
+        return self.razonDatos
+
 
 class RazonCompraDolar(Razon):
 
@@ -59,30 +63,34 @@ class RazonRetiroEfectivo(Razon):
     def __init__(self):
         self.type = 'RETIRO_EFECTIVO_CAJERO_AUTOMATICO'
 
-    '''
-        implementar resolver segun los casos de negocio
-    '''
+    def resolver(self,cliente,evento):
+        super().resolver(cliente,evento)
+        self.razonDatos.update(self.cliente.cuenta.extraerEfectivo(self.evento))
+        return self.razonDatos
+        
 
 class RazonTransferenciaEnviada(Razon):
 
     def __init__(self):
         self.type = 'TRANSFERENCIA_ENVIADA'
 
-    '''
-        implementar resolver segun los casos de negocio
-    '''
+    def resolver(self,cliente,evento):
+        super().resolver(cliente,evento)
+        self.razonDatos.update(self.cliente.cuenta.transferenciaEnviada(self.evento))
+        return self.razonDatos
+        
 
 class RazonTransferenciaRecibida(Razon):
 
     def __init__(self):
         self.type = 'TRANSFERENCIA_RECIBIDA'
 
-    '''
-        implementar resolver segun los casos de negocio
-    '''
+    def resolver(self, cliente, evento):
+        super().resolver(cliente,evento)
+        self.razonDatos.update(self.cliente.cuenta.tranferenciaRecibida(self.evento))
+        return self.razonDatos
 
-
-Razones={
+Razones = {
     'RETIRO_EFECTIVO_CAJERO_AUTOMATICO': RazonRetiroEfectivo,
     'ALTA_TARJETA_CREDITO': RazonAltaTarjetaCredito,
     'ALTA_CHEQUERA': RazonAltaChequera,
@@ -90,6 +98,7 @@ Razones={
     'TRANSFERENCIA_ENVIADA': RazonTransferenciaEnviada,
     'TRANSFERENCIA_RECIBIDA': RazonTransferenciaRecibida,
 }
+
 def RealizarOperacion(cliente,operacion):
     evento = operacion.get('tipo')
     razon = Razones.get(evento)()
