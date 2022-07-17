@@ -12,3 +12,8 @@ class Direccion:
         {self.ciudad}\n
         {self.provincia}\n
         {self.pais}\n"""
+    def getDireccion(self):
+        return (
+        f"{self.numero} {self.calle}",
+        f"{self.ciudad}",
+        f"{self.provincia} {self.pais}")
