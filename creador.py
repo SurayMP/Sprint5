@@ -4,8 +4,15 @@ def creador(datos):
     archivo= open('index.html','w')
     
     datosCliente='<div class="cliente">'
-    for infoClient in datos.get('cliente'):
-        datosCliente+=f"<p>{infoClient}</p>"
+    for i,infoClient in enumerate(datos.get('cliente')):
+        if(i==3):
+            datosCliente+=f"<p>Numero: {infoClient}</p>"
+        elif i==2:
+            datosCliente+=f"<p>Dni: {infoClient}</p>"
+        elif i==1:
+            datosCliente+=f"<p>Apellido: {infoClient}</p>"
+        elif i==0:
+            datosCliente+=f"<p>Nombre: {infoClient}</p>"
     datosCliente+='</div>'
 
     datosDireccion ='<div class="direccion">'
