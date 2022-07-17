@@ -12,6 +12,13 @@ class Cliente:
         self.nombre= diccionarioInfoCliente.get('nombre')
         self.apellido= diccionarioInfoCliente.get('apellido')
         self.dni= diccionarioInfoCliente.get('DNI')
+        self.direccion = Direccion({
+            "calle": diccionarioInfoCliente.get('calle'),
+            "numero": diccionarioInfoCliente.get('numero'),
+            "ciudad":diccionarioInfoCliente.get('ciudad'),
+            "provincia":diccionarioInfoCliente.get('provincia'),
+            "pais":diccionarioInfoCliente.get('pais'),
+        })
         self.tarjetaCredito=False
         self.tarjetaDebito = False
         self.chequera = False
