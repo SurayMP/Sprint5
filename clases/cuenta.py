@@ -47,12 +47,12 @@ class Cuenta:
         if monto < cupoDiarioRestante:
             return {
                 'estado': True,
-                'razon': ('La extracción fue realizada con éxito'),
+                'razon': ('La extraccion fue realizada con exito',),
             }
         else: 
             return {
                 'estado': False,
-                'razon': ('Fondos insuficientes para llevar a cabo la extracción'),
+                'razon': ('Fondos insuficientes para llevar a cabo la extraccion',),
             }
 
     def tranferenciaRecibida(self, data):
@@ -62,15 +62,15 @@ class Cuenta:
         if monto <  limiteTransferenciaRecibida:
             return {
                 'estado': True,
-                'razon': ('La transferencia fue reacibida con éxito'),
+                'razon': ('La transferencia fue reacibida con exito',),
             }
         else:
             return {
                 'estado': False,
                 'razon': (
                     'La transferencia no fue recibida',
-                    'El monto excede el límite de su cuenta',
-                    'Debe solicitar autorización al banco para recibir la transferencia'
+                    'El monto excede el limite de su cuenta',
+                    'Debe solicitar autorizacion al banco para recibir la transferencia'
                 ),
             }
     
@@ -82,7 +82,7 @@ class Cuenta:
         if monto < (cupoDiarioRestante + costoTransferencias):
             return {
                 'estado': True,
-                'razon': ('La transferencia fue enviada con éxito'),
+                'razon': ('La transferencia fue enviada con exito',),
             }
         else: 
             return {
@@ -93,14 +93,14 @@ class Cuenta:
                 ),
             }
 
-    def altaTarjeta(cliente, evento):
+    def altaTarjeta(self,cliente, evento):
         tarjetasActuales = evento.get('totalTarjetasDeCreditoActualmente')
         maxTarjetasPosibles = cliente.getTarjetaCredito()
         if cliente.puede_crear_tarjeta_credito():
             if tarjetasActuales < maxTarjetasPosibles:
                 return {
                     'estado': True, 
-                    'razon': ('La tarjeta de credito fue creada exitosamente') 
+                    'razon': ('La tarjeta de credito fue creada exitosamente',) 
                 }                 
             else:
                 return {
@@ -110,17 +110,17 @@ class Cuenta:
         else: 
             return { 
                 'estado': True, 
-                'razon': ('No puedes crear tarjeta de credito')
+                'razon': ('No puedes crear tarjeta de credito',)
             }
 
-    def razonAltaChequera(cliente, evento):
+    def altaChequera(self,cliente, evento):
         chequerasActuales = evento.get('totalChequerasActualmente')
         maxChequerasPosibles = cliente.getChequeras()
-        if cliente.puede_crear_chequeras():
+        if cliente.puede_crear_chequera():
             if chequerasActuales < maxChequerasPosibles:
                 return {
                     'estado': True,
-                    'razon': ('La chequera fue creada exitosamente')
+                    'razon': ('La chequera fue creada exitosamente',)
                 }
             else:
                 return {
@@ -131,5 +131,5 @@ class Cuenta:
         else:
             return { 
                 'estado': False, 
-                'razon': ('No puedes crear chequeras')
+                'razon': ('No puedes crear chequeras',)
             }

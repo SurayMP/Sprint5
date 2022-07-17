@@ -28,7 +28,7 @@ class RazonAltaChequera(Razon):
 
     def resolver(self,cliente,evento):
         super().resolver(cliente,evento)
-        self.razonDatos.update(self.cuenta.altaChequera(self.cliente, self.evento))
+        self.razonDatos.update(self.cliente.cuenta.altaChequera(self.cliente, self.evento))
         return self.razonDatos
 
 
@@ -39,7 +39,7 @@ class RazonAltaTarjetaCredito(Razon):
 
     def resolver(self, cliente, evento):
         super().resolver(cliente, evento)
-        self.razonDatos.update(self.cuenta.altaTarjeta(self.cliente, self.evento))
+        self.razonDatos.update(self.cliente.cuenta.altaTarjeta(self.cliente, self.evento))
         return self.razonDatos
 
 
@@ -54,7 +54,7 @@ class RazonCompraDolar(Razon):
             self.razonDatos.update(self.cliente.cuenta.comprarDolares(self.evento))
             return self.razonDatos
         else:
-            self.razonDatos.update({'estado':False,'razon':("El Cliente No Puede Comprar Dolares")})
+            self.razonDatos.update({'estado':False,'razon':("El Cliente No Puede Comprar Dolares",)})
             return self.razonDatos
 
 
