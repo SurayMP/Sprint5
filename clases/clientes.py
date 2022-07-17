@@ -11,7 +11,15 @@ class Cliente:
         self.numero= diccionarioInfoCliente.get('numero')
         self.nombre= diccionarioInfoCliente.get('nombre')
         self.apellido= diccionarioInfoCliente.get('apellido')
-        self.dni= diccionarioInfoCliente.get('DNI')
+        self.dni= diccionarioInfoCliente.get('dni')
+        self.direccion = Direccion(diccionarioInfoCliente.get('direccion'))
+        # self.direccion = Direccion({
+        #     "calle": diccionarioInfoCliente.get('calle'),
+        #     "numero": diccionarioInfoCliente.get('numero'),
+        #     "ciudad":diccionarioInfoCliente.get('ciudad'),
+        #     "provincia":diccionarioInfoCliente.get('provincia'),
+        #     "pais":diccionarioInfoCliente.get('pais'),
+        # })
         self.tarjetaCredito=False
         self.tarjetaDebito = False
         self.chequera = False
@@ -37,8 +45,13 @@ class Cliente:
         
     def puede_comprar_dolar(self) -> bool:
         return False
-    def datos_para_html(self):
-        pass
+    def datos_para_html (self):
+        datos={
+            'cliente':( self.nombre,self.apellido,self.dni,self.numero ),
+            'direccion':self.direccion.getDireccion(),
+            'razones':self.razones
+        }
+        return datos
 
 class ClienteClassic(Cliente):
     def __init__(self,diccionarioInfoCliente) -> None:
@@ -61,12 +74,6 @@ class ClienteClassic(Cliente):
         
     def puede_comprar_dolar(self) -> bool:
         return False
-    def datos_para_html (self):
-        print(self.razones)
-        return self.razones
-        # self.razones=[ Razon(x,self) for x in self.transacciones ]
-    # def __str__(self):
-    #     return self.cuentas.get("AHORRO_PESOS").__str__()
 
 
 class ClienteGold(Cliente):
@@ -95,7 +102,3 @@ class ClienteBlack(Cliente):
     
     def puede_comprar_dolar(self)-> bool:
         return True
-
-    def datos_para_html (self):
-        print(self.razones)
-        return self.razones

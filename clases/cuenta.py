@@ -22,15 +22,17 @@ class Cuenta:
 
         # Cambiar la tupla por Diccionario??
         if saldo >= monto:
-            return (True,
-            f"La Operacion De Compra Fue Exitosa",
-            f"Compra por un monto de ${monto}",
-            )
+            return {
+            'estado':True,
+            'razon':(f"La Operacion De Compra Fue Exitosa",
+            f"Compra por un monto de ${monto}",)
+            }
         else: 
-            return (False,
-            f"La Operacion De Compra Fue Rechazada",
+            return {
+            'estado':False,
+            'razon':( f"La Operacion De Compra Fue Rechazada",
             f"Compra por un monto de ${monto}",
             f"Se Recibio una Cantidad de $USD{0}",
             f"Fondos insuficientes para llevar a cabo la operacion"
-            )
+            )}
 

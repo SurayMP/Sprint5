@@ -13,6 +13,12 @@ class Razon:
     def resolver(self,cliente, evento):
         self.cliente=cliente
         self.evento = evento
+        self.razonDatos = {
+            'fecha':evento.get('fecha'),
+            'monto':evento.get('monto'),
+            'tipo':evento.get('tipo')
+        }
+
         return 'Analisis'
 
 class RazonAltaChequera(Razon):
@@ -36,14 +42,16 @@ class RazonAltaTarjetaCredito(Razon):
 class RazonCompraDolar(Razon):
 
     def __init__(self):
-        self.type = 'COMPRAR_DOLAR'
+        self.type = 'COMPRA_DOLAR'
         
     def resolver(self,cliente,evento):
         super().resolver(cliente,evento)
         if self.cliente.puede_comprar_dolar():
-            return self.cliente.cuenta.comprarDolares(self.evento)
+            self.razonDatos.update(self.cliente.cuenta.comprarDolares(self.evento))
+            return self.razonDatos
         else:
-            return ("El Cliente No Puede Comprar Dolares")
+            self.razonDatos.update({'estado':False,'razon':("El Cliente No Puede Comprar Dolares")})
+            return self.razonDatos
 
 
 class RazonRetiroEfectivo(Razon):
