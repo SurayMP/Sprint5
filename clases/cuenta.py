@@ -18,21 +18,118 @@ class Cuenta:
 
     def comprarDolares(self,data):
         saldo = data.get("saldoEnCuenta")
-        valorDolar = data.get("valorDolar")
-        cantidad = data.get("cantidad")
         monto = data.get("monto")
 
         # Cambiar la tupla por Diccionario??
-        if saldo >= cantidad*valorDolar:
-            return (True,
-            f"La Operacion De Compra Fue Exitosa",
-            f"Compra por un costo de ${cantidad*valorDolar}",
-            f"Se Recibio una Cantidad de $USD{cantidad}"
-            )
+        if saldo >= monto:
+            return {
+                'estado': True,
+                'razon': (
+                    f"La Operacion De Compra Fue Exitosa",
+                    f"Compra por un monto de ${monto}",
+                )
+            }
         else: 
-            return (False,
-            f"La Operacion De Compra Fue Rechazada",
-            f"Compra por un costo de ${cantidad*valorDolar}",
-            f"Se Recibio una Cantidad de $USD{0}",
-            )
+            return {
+                'estado':False,
+                'razon': ( 
+                    f"La Operacion De Compra Fue Rechazada",
+                    f"Compra por un monto de ${monto}",
+                    f"Se Recibio una Cantidad de $USD{0}",
+                    f"Fondos insuficientes para llevar a cabo la operacion"
+                )
+            }
 
+    def extraerEfectivo(self, data):
+        cupoDiarioRestante = data.get("cupoDiarioRestante")
+        monto = data.get("monto")
+
+        if monto < cupoDiarioRestante:
+            return {
+                'estado': True,
+                'razon': ('La extraccion fue realizada con exito',),
+            }
+        else: 
+            return {
+                'estado': False,
+                'razon': ('Fondos insuficientes para llevar a cabo la extraccion',),
+            }
+
+    def tranferenciaRecibida(self, data):
+        monto = data.get("monto")
+        limiteTransferenciaRecibida = self._limite_transferencia_recibida
+
+        if monto <  limiteTransferenciaRecibida:
+            return {
+                'estado': True,
+                'razon': ('La transferencia fue reacibida con exito',),
+            }
+        else:
+            return {
+                'estado': False,
+                'razon': (
+                    'La transferencia no fue recibida',
+                    'El monto excede el limite de su cuenta',
+                    'Debe solicitar autorizacion al banco para recibir la transferencia'
+                ),
+            }
+    
+    def transferenciaEnviada(self, data):
+        monto = data.get("monto")
+        cupoDiarioRestante = data.get("cupoDiarioRestante")
+        costoTransferencias = self._costo_transferencias
+
+        if monto < (cupoDiarioRestante + costoTransferencias):
+            return {
+                'estado': True,
+                'razon': ('La transferencia fue enviada con exito',),
+            }
+        else: 
+            return {
+                'estado': False,
+                'razon': (
+                    'La transferencia no fue enviada',
+                    'El monto excede el saldo de su cuenta',
+                ),
+            }
+
+    def altaTarjeta(self,cliente, evento):
+        tarjetasActuales = evento.get('totalTarjetasDeCreditoActualmente')
+        maxTarjetasPosibles = cliente.getTarjetaCredito()
+        if cliente.puede_crear_tarjeta_credito():
+            if tarjetasActuales < maxTarjetasPosibles:
+                return {
+                    'estado': True, 
+                    'razon': ('La tarjeta de credito fue creada exitosamente',) 
+                }                 
+            else:
+                return {
+                    'estado': False, 
+                    'razon': (f'Ya tienes {maxTarjetasPosibles} tarjetas de credito', 'No puedes crear otra')
+                }
+        else: 
+            return { 
+                'estado': True, 
+                'razon': ('No puedes crear tarjeta de credito',)
+            }
+
+    def altaChequera(self,cliente, evento):
+        chequerasActuales = evento.get('totalChequerasActualmente')
+        maxChequerasPosibles = cliente.getChequeras()
+        if cliente.puede_crear_chequera():
+            if chequerasActuales < maxChequerasPosibles:
+                return {
+                    'estado': True,
+                    'razon': ('La chequera fue creada exitosamente',)
+                }
+            else:
+                return {
+                    'estado': False, 
+                    'razon': (f'Ya tienes {maxChequerasPosibles} chequeras', 'No puedes crear otra')
+                }
+                 
+        else:
+            return { 
+                'estado': False, 
+                'razon': ('No puedes crear chequeras',)
+            }
