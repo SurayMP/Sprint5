@@ -28,18 +28,8 @@ class RazonAltaChequera(Razon):
 
     def resolver(self,cliente,evento):
         super().resolver(cliente,evento)
-        chequerasActuales = self.evento.get('totalChequerasActualmente')
-        maxChequerasPosibles = self.cliente.getChequeras()
-        if self.cliente.puede_crear_chequeras():
-            if chequerasActuales < maxChequerasPosibles:
-                self.razonDatos.update({ 'estado': True, 'razon': ('La chequera fue creada exitosamente')})
-                return self.razonDatos
-            else:
-                self.razonDatos.update({ 'estado': False, 'razon': (f'Ya tienes {maxChequerasPosibles} chequeras', 'No puedes crear otra')})
-                return self.razonDatos
-        else:
-            self.razonDatos.update({ 'estado': False, 'razon': ('No puedes crear chequeras')})
-            return self.razonDatos
+        self.razonDatos.update(self.cuenta.altaChequera(self.cliente, self.evento))
+        return self.razonDatos
 
 
 class RazonAltaTarjetaCredito(Razon):
