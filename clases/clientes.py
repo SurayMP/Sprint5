@@ -83,10 +83,28 @@ class ClienteClassic(Cliente):
         return False
 
 
-class ClienteGold(Cliente):
-   def __init__(self,diccionarioInfoCliente) -> None:
-        Cliente.__init__(self,diccionarioInfoCliente)
 
+class ClienteGold(Cliente):
+    def __init__(self,diccionarioInfoCliente) -> None:
+        Cliente.__init__(self,diccionarioInfoCliente)
+        self.tarjetaCredito = 1
+        self.tarjetaDebito = 1
+        self.chequera = 1
+        self.cuenta = Cuenta({
+            "_limite_extraccion_diario":20000,
+            "_limite_transferencia_recibida":500000,
+            "_costo_transferencias":0.5,
+            "_saldo_descubierto_disponible":10000
+        })
+        self.razones=[ RealizarOperacion(self,cadaTransacc) for cadaTransacc in self.transacciones ]
+    def puede_crear_chequera(self) -> bool:
+        return True
+
+    def puede_crear_tarjeta_credito(self)-> bool:
+        return False
+    
+    def puede_comprar_dolar(self)-> bool:
+        return True
 
 class ClienteBlack(Cliente):
     def __init__(self,diccionarioInfoCliente) -> None:
