@@ -13,7 +13,7 @@ class Razon:
     def resolver(self,cliente, evento):
         self.cliente=cliente
         self.evento = evento
-        return 'Analizis'
+        return 'Analisis'
 
 class RazonAltaChequera(Razon):
 
@@ -40,7 +40,6 @@ class RazonCompraDolar(Razon):
         
     def resolver(self,cliente,evento):
         super().resolver(cliente,evento)
-        
         if self.cliente.puede_comprar_dolar():
             return self.cliente.cuenta.comprarDolares(self.evento)
         else:
@@ -79,7 +78,7 @@ Razones={
     'RETIRO_EFECTIVO_CAJERO_AUTOMATICO': RazonRetiroEfectivo,
     'ALTA_TARJETA_CREDITO': RazonAltaTarjetaCredito,
     'ALTA_CHEQUERA': RazonAltaChequera,
-    'COMPRAR_DOLAR': RazonCompraDolar,
+    'COMPRA_DOLAR': RazonCompraDolar,
     'TRANSFERENCIA_ENVIADA': RazonTransferenciaEnviada,
     'TRANSFERENCIA_RECIBIDA': RazonTransferenciaRecibida,
 }

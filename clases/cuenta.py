@@ -18,21 +18,19 @@ class Cuenta:
 
     def comprarDolares(self,data):
         saldo = data.get("saldoEnCuenta")
-        valorDolar = data.get("valorDolar")
-        cantidad = data.get("cantidad")
         monto = data.get("monto")
 
         # Cambiar la tupla por Diccionario??
-        if saldo >= cantidad*valorDolar:
+        if saldo >= monto:
             return (True,
             f"La Operacion De Compra Fue Exitosa",
-            f"Compra por un costo de ${cantidad*valorDolar}",
-            f"Se Recibio una Cantidad de $USD{cantidad}"
+            f"Compra por un monto de ${monto}",
             )
         else: 
             return (False,
             f"La Operacion De Compra Fue Rechazada",
-            f"Compra por un costo de ${cantidad*valorDolar}",
+            f"Compra por un monto de ${monto}",
             f"Se Recibio una Cantidad de $USD{0}",
+            f"Fondos insuficientes para llevar a cabo la operacion"
             )
 
